@@ -9,23 +9,35 @@
     <h1 id="text"></h1>
 </body>
 <script>
-    window.onload=function(){
+    window.onload=async function(){
         if(window.NDEFReader){
-            document.getElementById("text").innerHTML="浏览器支持NFC"
+            document.getElementById("text").innerHTML="浏览器支持NFC1201"
         }else{
             document.getElementById("text").innerHTML="浏览器不支持NFC"
         }
-        const reader = new NDEFReader();
+        const ndef = new NDEFReader();
 
-        reader.scan().then(() => {
-        reader.addEventListener("reading", event => {
-            for (const record of event.message.records) {
-            document.getElementById("text").innerHTML+="\nRecord type:  " + record.recordType;
-            document.getElementById("text").innerHTML+="\nMIME type:    " + record.mediaType;
-            document.getElementById("text").innerHTML+="\nData:         " + record.data;
+        // ndef.scan().then(() => {
+        //     ndef.addEventListener("reading", event => {
+        //         for (const record of event.message.records) {
+        //             document.getElementById("text").innerHTML+="\nRecord type:  " + record.recordType;
+        //             document.getElementById("text").innerHTML+="\nMIME type:    " + record.mediaType;
+        //             document.getElementById("text").innerHTML+="\nData:         " + record.data;
+        //         }
+        //     });
+        // }).catch(error => {
+        // console.log("Error reading NFC: " + error);
+        // });
+        ndef.onreading = (event) => {
+            console.log("我们读取了一个标签，但在待写入期间没有读取！");
+            if (ignoreRead) {
+                return; // 待写入，忽略读取。
             }
-        });
-        }).catch(error => {
+
+            console.log("我们读取了一个标签，但在待写入期间没有读取！");
+        };
+
+        await ndef.scan().catch(error => {
         console.log("Error reading NFC: " + error);
         });
     }
