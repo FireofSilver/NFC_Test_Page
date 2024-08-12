@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="text"></h1>
+</body>
+<script>
+    window.onload=function(){
+        if(window.NDEFReader){
+            document.getElementById("text").innerHTML="浏览器支持NFC"
+        }else{
+            document.getElementById("text").innerHTML="浏览器不支持NFC"
+        }
+        const reader = new NDEFReader();
+
+        reader.scan().then(() => {
+        reader.addEventListener("reading", event => {
+            for (const record of event.message.records) {
+            document.getElementById("text").innerHTML+="\nRecord type:  " + record.recordType;
+            document.getElementById("text").innerHTML+="\nMIME type:    " + record.mediaType;
+            document.getElementById("text").innerHTML+="\nData:         " + record.data;
+            }
+        });
+        }).catch(error => {
+        console.log("Error reading NFC: " + error);
+        });
+    }
+</script>
+</html>
