@@ -33,9 +33,11 @@
             const ndef = new NDEFReader();
             ndef.onreading = (event) => {
                 console.log("我们读取了一个标签，但在待写入期间没有读取！");
-                document.getElementById("text").innerHTML+="\nRecord type:  " + record.recordType;
-                document.getElementById("text").innerHTML+="\nMIME type:    " + record.mediaType;
-                document.getElementById("text").innerHTML+="\nData:         " + record.data;
+                for (const record of event.message.records) {
+                    document.getElementById("text").innerHTML+="\nRecord type:  " + record.recordType;
+                    document.getElementById("text").innerHTML+="\nMIME type:    " + record.mediaType;
+                    document.getElementById("text").innerHTML+="\nData:         " + record.data;
+                }
             };
 
             await ndef.scan().catch(error => {
