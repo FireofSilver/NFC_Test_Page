@@ -28,6 +28,7 @@
         // }).catch(error => {
         // console.log("Error reading NFC: " + error);
         // });
+        let onclick
         document.getElementById("nfcBtn").onclick= async()=>{
 
             const ndef = new NDEFReader();
@@ -43,6 +44,8 @@
             await ndef.scan().catch(error => {
             console.log("Error reading NFC: " + error);
             });
+            ndef.write("hello world");
+            console.log("写入完毕")
         }
     }
 </script>
