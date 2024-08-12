@@ -7,15 +7,15 @@
 </head>
 <body>
     <h1 id="text"></h1>
+    <button id="nfcBtn">读取nfc</button>
 </body>
 <script>
     window.onload=async function(){
         if(window.NDEFReader){
-            document.getElementById("text").innerHTML="浏览器支持NFC1201"
+            document.getElementById("text").innerHTML="浏览器支持NFC1325"
         }else{
             document.getElementById("text").innerHTML="浏览器不支持NFC"
         }
-        const ndef = new NDEFReader();
 
         // ndef.scan().then(() => {
         //     ndef.addEventListener("reading", event => {
@@ -28,18 +28,22 @@
         // }).catch(error => {
         // console.log("Error reading NFC: " + error);
         // });
-        ndef.onreading = (event) => {
+        document.getElementById("nfcBtn").onclick= async()=>{
+
+            const ndef = new NDEFReader();
+            ndef.onreading = (event) => {
             console.log("我们读取了一个标签，但在待写入期间没有读取！");
             if (ignoreRead) {
                 return; // 待写入，忽略读取。
             }
 
             console.log("我们读取了一个标签，但在待写入期间没有读取！");
-        };
+            };
 
-        await ndef.scan().catch(error => {
-        console.log("Error reading NFC: " + error);
-        });
+            await ndef.scan().catch(error => {
+            console.log("Error reading NFC: " + error);
+            });
+        }
     }
 </script>
 </html>
